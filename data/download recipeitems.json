@@ -1,0 +1,28 @@
+#  Run the code in Jupyter Lab to download "recipeitems.json.gz" and then decompress it. 
+#  After all of these, you should move the newly created "recipeitems.json" file into the "data" folder. 
+#  Now the "sahib_test_22.ipynb" file is ready for running.
+
+
+
+
+import requests
+
+url = "https://raw.githubusercontent.com/jakevdp/open-recipe-data/master/recipeitems.json.gz"
+output_path = "recipeitems.json.gz"
+
+response = requests.get(url, stream=True)
+with open(output_path, "wb") as f:
+    for chunk in response.iter_content(chunk_size=1024):
+        f.write(chunk)
+
+print("Download complete:", output_path)
+
+
+import gzip
+import shutil
+
+with gzip.open("recipeitems.json.gz", "rb") as f_in:
+    with open("recipeitems.json", "wb") as f_out:
+        shutil.copyfileobj(f_in, f_out)
+
+print("Decompression complete: recipeitems.json")
